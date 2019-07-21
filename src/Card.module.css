@@ -1,0 +1,36 @@
+/* TODO study animation effects - cubic-bezier */
+
+.separator {
+  animation: height 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: height 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.separator > div {
+  animation: expand 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  width: 100%;
+  background-color: #1a73e8;
+  height: 3px;
+  border-radius: 10px;
+}
+
+@keyframes height {
+  from {
+    height: 0;
+  }
+  to {
+    height: 15px;
+  }
+}
+
+@keyframes expand {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
