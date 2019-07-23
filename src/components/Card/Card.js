@@ -28,17 +28,27 @@ const Card = ({id, text, index, moveCard, preMove, arrangeIndex}) => {
 
       if (dragIndex === hoverIndex) {return}
 
-      // Determine rectangle on screen
       const hoverBoundingRect = ref.current.getBoundingClientRect()
+      const rectWidth = hoverBoundingRect.right - hoverBoundingRect.left
 
-      // Get vertical middle
+      const hoverLeftQuarter = rectWidth / 4
+      const hoverRightQuarter = rectWidth - rectWidth / 4
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
 
-      // Determine mouse position
       const clientOffset = monitor.getClientOffset()
 
-      // Get pixels to the top
       const hoverClientY = clientOffset.y - hoverBoundingRect.top
+      const hoverClientX = clientOffset.x - hoverBoundingRect.left
+
+      // hover left
+      if(hoverClientX < hoverLeftQuarter) {
+        return
+      }
+
+      // hover right
+      if(hoverClientX > hoverRightQuarter) {
+        return
+      }
 
       // TODO - optimize checking
       if(dragIndex > hoverIndex) {
@@ -79,17 +89,11 @@ const Card = ({id, text, index, moveCard, preMove, arrangeIndex}) => {
     }
   })
 
-  const [{isOver}, drop2] = useDrop({
+  // TODO - separator as separate component?
+  const [{separatorIsOver}, separatorDrop] = useDrop({
     accept: ItemTypes.CARD,
-    hover() {
-
-    },
-    drop() {
-      preMove(null)
-    },
-    collect: monitor => ({
-      isOver: monitor.isOver()
-    })
+    drop: () => preMove(null),
+    collect: monitor => ({separatorIsOver: monitor.isOver()})
   })
 
   const [{ isDragging }, drag] = useDrag({
@@ -99,9 +103,10 @@ const Card = ({id, text, index, moveCard, preMove, arrangeIndex}) => {
     })
   })
 
-  // TODO - drop2 is kind of ugly name
+  // TODO - fix, when hover on separator immediately the animation is jumpy
+  // TODO - fix, separator closes jumpy
   const horizontalSeparator = (
-    <div ref={drop2} className={styles.separator} style={{height: isOver ? '35px' : '15px'}}>
+    <div ref={separatorDrop} className={styles.separator} style={{height: separatorIsOver ? '35px' : '15px'}}>
       <div />
     </div>
   )
