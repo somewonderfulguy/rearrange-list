@@ -1,15 +1,9 @@
 import React, {useState, useCallback} from 'react'
 import update from 'immutability-helper'
 
-import Card from './Card'
-import List from './constants/List'
-
-const style = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '90%'
-}
+import Card from '../Card'
+import List from '../../constants/List'
+import styles from './App.module.css'
 
 const App = () => {
   const [cards, setCards] = useState(List)
@@ -32,8 +26,8 @@ const App = () => {
   }
 
   return (
-    <div style={style}>
-      <div style={{width: 400}}>
+    <div className={styles.flex}>
+      <div className={styles.constructorContainer}>
         {cards.map((card, i) => (
           <Card
             key={card.id}

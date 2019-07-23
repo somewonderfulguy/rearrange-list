@@ -1,9 +1,10 @@
 import React, {useRef} from 'react'
 import {useDrag, useDrop} from 'react-dnd'
 
-import ItemTypes from './constants/ItemTypes'
+import ItemTypes from '../../constants/ItemTypes'
 import styles from './Card.module.css'
 
+// TODO move to css module
 const style = {
   border: '1px dashed gray',
   padding: '1.5rem 1rem',
@@ -98,32 +99,26 @@ const Card = ({id, text, index, moveCard, preMove, arrangeIndex}) => {
     })
   })
 
-  // TODO - make more meaningful names
-  const opacity = isDragging ? 0.3 : 1
-  const height = isOver ? '35px' : '15px'
+  // TODO - drop2 is kind of ugly name
+  const horizontalSeparator = (
+    <div ref={drop2} className={styles.separator} style={{height: isOver ? '35px' : '15px'}}>
+      <div />
+    </div>
+  )
 
   drop(ref)
 
-  //TODO - put separator in variable
   return (
     <>
-      {(index === 0 && arrangeIndex === -1) && (
-        <div ref={drop2} className={styles.separator} style={{height}}>
-          <div />
-        </div>
-      )}
+      {(index === 0 && arrangeIndex === -1) && horizontalSeparator}
 
       <div ref={ref}>
-        <div ref={drag} style={{...style, opacity}}>
+        <div ref={drag} style={{...style, opacity: isDragging ? 0.3 : 1}}>
           {text}
         </div>
       </div>
 
-      {(index === arrangeIndex) && (
-        <div ref={drop2} className={styles.separator} style={{height}}>
-          <div />
-        </div>
-      )}
+      {(index === arrangeIndex) && horizontalSeparator}
     </>
   )
 }
